@@ -1,3 +1,9 @@
 [submodule "ome-lochy/kubespray"]
 	path = ome-lochy/kubespray
 	url = https://github.com/openmicroscopy/kubespray.git
+[submodule "kubedev/kubespray"]
+	path = kubedev/kubespray
+	url = https://github.com/kubernetes-incubator/kubespray.git
+[submodule "idr-vae/kubespray"]
+	path = idr-vae/kubespray
+	url = https://github.com/kubernetes-incubator/kubespray.git
