@@ -1,9 +1,9 @@
 # https://github.com/kubernetes-incubator/kubespray/blob/master/docs/ansible.md
 
 all:
-  hosts:
-    bastion:
-      ansible_host: "{{ external_access.0 }}"
+  # hosts:
+  #   bastion:
+  #     ansible_host: "{{ external_access.0 }}"
   vars:
     ansible_user: centos
     # kubespray bastion

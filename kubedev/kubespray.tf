@@ -1,3 +1,25 @@
+module "network" {
+  source = "kubespray/contrib/terraform/openstack/modules/network"
+
+  external_net    = "${var.external_net}"
+  network_name    = "${var.network_name}"
+  cluster_name    = "${var.cluster_name}"
+  dns_nameservers = "${var.dns_nameservers}"
+}
+
+/* module "ips" {
+  source = "modules/ips"
+
+  number_of_k8s_masters         = "${var.number_of_k8s_masters}"
+  number_of_k8s_masters_no_etcd = "${var.number_of_k8s_masters_no_etcd}"
+  number_of_k8s_nodes           = "${var.number_of_k8s_nodes}"
+  floatingip_pool               = "${var.floatingip_pool}"
+  number_of_bastions            = "${var.number_of_bastions}"
+  external_net                  = "${var.external_net}"
+  network_name                  = "${var.network_name}"
+  router_id                     = "${module.network.router_id}"
+} */
+
 module "compute" {
   source = "kubespray/contrib/terraform/openstack/modules/compute"
 
@@ -23,9 +45,34 @@ module "compute" {
   flavor_gfs_node                              = "${var.flavor_gfs_node}"
   network_name                                 = "${var.network_name}"
   flavor_bastion                               = "${var.flavor_bastion}"
-  k8s_master_fips                              = []
-  k8s_node_fips                                = []
-  bastion_fips                                 = []
+  k8s_master_fips                              = "${var.k8s_master_fips}"
+  k8s_node_fips                                = "${var.k8s_node_fips}"
+  bastion_fips                                 = "${var.bastion_fips}"
+  supplementary_master_groups                  = "${var.supplementary_master_groups}"
 
-  network_id = "dummy-variable"
+  network_id = "${module.network.router_id}"
+}
+
+variable "k8s_master_fips" {
+  default = [""]
+}
+
+variable "k8s_node_fips" {
+  default = [""]
+}
+
+variable "bastion_fips" {
+  default = [""]
+}
+
+output "private_subnet_id" {
+  value = "${module.network.subnet_id}"
+}
+
+output "floating_network_id" {
+  value = "${var.external_net}"
+}
+
+output "router_id" {
+  value = "${module.network.router_id}"
 }
